@@ -183,9 +183,8 @@ class Api(object):
             setup_state._original_add_url_rule = setup_state.add_url_rule
             setup_state.add_url_rule = MethodType(Api._blueprint_setup_add_url_rule_patch,
                                                   setup_state)
-        if not setup_state.first_registration:
-            raise ValueError('flask-restful blueprints can only be registered once.')
-        self._init_app(setup_state.app)
+        if setup_state.first_registration:
+            self._init_app(setup_state.app)
 
     def _init_app(self, app):
         """Perform initialization actions with the given :class:`flask.Flask`
